@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "vue": "^3.2.25",
-    "vue3-resize-drag": "^0.3.0"
+    "vue-drag-resize": "^2.0.3",
+    "vue3-resize-drag": "^0.3.0",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",

@@ -1,14 +1,38 @@
-<script setup></script>
+<script setup>
+import { reactive, ref } from "vue";
+import draggable from "vuedraggable";
+
+let drag = ref(false);
+
+const myArray = ref([
+    { name: "vue.draggable", id: 2 },
+    { name: "draggable", id: 1 },
+    { name: "component", id: 3 },
+    { name: "for", id: 4 },
+    { name: "vue.js 2.0", id: 5 },
+    { name: "based", id: 6 },
+    { name: "on", id: 7 },
+    { name: "Sortablejs", id: 8 },
+]);
+
+const handleClone = () => {
+    console.log(1212313);
+};
+</script>
 
 <template>
     <div class="centerMain">
-        <p>canvas</p>
-        <vue3ResizeDrag :x="260" :y="90" :w="1200" :h="600" :zIndex="1">
-            测试1
-        </vue3ResizeDrag>
-        <vue3ResizeDrag :x="260" :y="90" :w="300" :h="32" :zIndex="1">
-            <input style="padding: 10px" type="text" value="123">
-        </vue3ResizeDrag>
+        <draggable
+            v-model="myArray"
+            group="people"
+            item-key="id"
+            :sort="false"
+            @clone="handleClone"
+        >
+            <template #item="{ element }">
+                <div class="item">{{ element.name }}</div>
+            </template>
+        </draggable>
     </div>
 </template>
 
@@ -16,5 +40,11 @@
 .centerMain {
     background-color: #fff;
     overflow: hidden;
+    position: relative;
+}
+.item {
+    height: 100px;
+    background: #ddd;
+    margin: 10px 0;
 }
 </style>

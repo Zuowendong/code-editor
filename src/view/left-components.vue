@@ -26,6 +26,7 @@ const components = reactive([
 .leftMain {
     background-color: #fff;
     padding-left: 10px;
+    box-sizing: border-box;
 }
 .title {
     margin: 10px 0;
