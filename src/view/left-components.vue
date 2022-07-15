@@ -1,15 +1,19 @@
 <script setup>
 import { ref, reactive } from "vue";
 import draggable from "vuedraggable";
+import { useComponentStore } from "../store/modules/component";
+
 const components = reactive([
-    { id: 1, name: "表单容器" },
-    { id: 2, name: "输入框" },
-    { id: 3, name: "下拉框" },
-    { id: 4, name: "单选按钮组" },
-    { id: 5, name: "复选按钮组" },
+    { id: 1, name: "表单容器", style: { top: 100, left: 160 } },
+    { id: 2, name: "输入框", style: { top: 300, left: 260 } },
+    { id: 3, name: "下拉框", style: { top: 500, left: 60 } },
+    { id: 4, name: "单选按钮组", style: { top: 600, left: 560 } },
+    { id: 5, name: "复选按钮组", style: { top: 800, left: 460 } },
 ]);
 
+const componentStore = useComponentStore();
 const handleClone = (data) => {
+    componentStore.setCurrentComponent(data);
     console.log("当前选中的组件", data);
 };
 </script>

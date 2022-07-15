@@ -2,6 +2,7 @@
 import { reactive, ref } from "vue";
 import draggable from "vuedraggable";
 import VueDragResize from "vue-drag-resize";
+import { useComponentStore } from "../store/modules/component";
 
 const components = reactive([
     { id: 1, name: "表单容器", style: { top: 100, left: 160 } },
@@ -21,7 +22,6 @@ const handleMove = (evt, originalEvent) => {
         <draggable
             v-model="components"
             tag="transition-group"
-            :component-data="{ name: 'fade' }"
             :item-key="id"
             :move="handleMove"
         >

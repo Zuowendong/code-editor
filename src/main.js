@@ -1,6 +1,7 @@
 import { createApp } from "vue";
-import App from "./App.vue";
 import { forEach } from "lodash-es";
+import App from "./App.vue";
+import { store } from "./store";
 
 import * as components from "./components/index";
 const createComponents = () => ({
@@ -11,4 +12,4 @@ const createComponents = () => ({
     },
 });
 
-createApp(App).use(createComponents()).mount("#app");
+createApp(App).use(store).use(createComponents()).mount("#app");
