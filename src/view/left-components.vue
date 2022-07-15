@@ -1,24 +1,34 @@
 <script setup>
 import { ref, reactive } from "vue";
+import draggable from "vuedraggable";
 const components = reactive([
-    { name: "表单容器" },
-    { name: "输入框" },
-    { name: "下拉框" },
-    { name: "单选按钮组" },
-    { name: "复选按钮组" },
+    { id: 1, name: "表单容器" },
+    { id: 2, name: "输入框" },
+    { id: 3, name: "下拉框" },
+    { id: 4, name: "单选按钮组" },
+    { id: 5, name: "复选按钮组" },
 ]);
+
+const handleClone = (data) => {
+    console.log("当前选中的组件", data);
+};
 </script>
 
 <template>
     <div class="leftMain">
         <p class="title">components</p>
-        <div
-            class="component-warp"
-            v-for="(item, index) in components"
-            :key="index"
+
+        <draggable
+            v-model="components"
+            group="people"
+            item-key="id"
+            :sort="false"
+            @clone="handleClone"
         >
-            {{ item.name }}
-        </div>
+            <template #item="{ element }">
+                <div class="component-warp">{{ element.name }}</div>
+            </template>
+        </draggable>
     </div>
 </template>
 
