@@ -3,35 +3,36 @@ import { reactive, ref } from "vue";
 import draggable from "vuedraggable";
 import VueDragResize from "vue-drag-resize";
 import { useComponentStore } from "../store/modules/component";
+import { useDragGroupStore } from "../store/modules/dragGroup";
 
-const components = reactive([
-    { id: 1, name: "表单容器", style: { top: 100, left: 160 } },
-    { id: 2, name: "输入框", style: { top: 300, left: 260 } },
-    { id: 3, name: "下拉框", style: { top: 500, left: 60 } },
-    { id: 4, name: "单选按钮组", style: { top: 600, left: 560 } },
-    { id: 5, name: "复选按钮组", style: { top: 800, left: 460 } },
+let components = reactive([
+    // { id: 1, name: "表单容器", top: 100, left: 160 },
+    // { id: 2, name: "输入框", top: 300, left: 260 },
+    // { id: 3, name: "下拉框", top: 500, left: 60 },
+    // { id: 4, name: "单选按钮组", top: 600, left: 560 },
+    // { id: 5, name: "复选按钮组", top: 800, left: 460 },
 ]);
 
-const handleMove = (evt, originalEvent) => {
-    console.log(1231231, evt, originalEvent);
-};
+const dragGroupStore = useDragGroupStore();
+let GROUPNAME = dragGroupStore.dragGroupName;
 </script>
 
 <template>
     <div class="centerMain">
+        {{components}}
         <draggable
-            v-model="components"
+            :list="components"
+            :group="{ name: GROUPNAME }"
             tag="transition-group"
             :item-key="id"
-            :move="handleMove"
         >
             <template #item="{ element }">
                 <vue-drag-resize
                     class="component-warp"
                     :w="200"
                     :h="40"
-                    :x="element.style.top"
-                    :y="element.style.left"
+                    :x="element.top"
+                    :y="element.left"
                 >
                     <input class="input" type="text" :value="element.name" />
                 </vue-drag-resize>

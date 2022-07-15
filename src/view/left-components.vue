@@ -2,19 +2,32 @@
 import { ref, reactive } from "vue";
 import draggable from "vuedraggable";
 import { useComponentStore } from "../store/modules/component";
+import { useDragGroupStore } from "../store/modules/dragGroup";
 
-const components = reactive([
-    { id: 1, name: "表单容器", style: { top: 100, left: 160 } },
-    { id: 2, name: "输入框", style: { top: 300, left: 260 } },
-    { id: 3, name: "下拉框", style: { top: 500, left: 60 } },
-    { id: 4, name: "单选按钮组", style: { top: 600, left: 560 } },
-    { id: 5, name: "复选按钮组", style: { top: 800, left: 460 } },
+let components = reactive([
+    { id: 1, name: "表单容器" },
+    { id: 2, name: "输入框" },
+    { id: 3, name: "下拉框" },
+    { id: 4, name: "单选按钮组" },
+    { id: 5, name: "复选按钮组" },
 ]);
 
+/**
+ * 全局拖拽组名
+ */
+let GROUPNAME = "people";
+const dragGroupStore = useDragGroupStore();
+dragGroupStore.setdDragGroupName(GROUPNAME);
+
 const componentStore = useComponentStore();
-const handleClone = (data) => {
-    componentStore.setCurrentComponent(data);
-    console.log("当前选中的组件", data);
+let idGlobal = 8;
+const handleClone = ({ id }) => {
+    return {
+        id: idGlobal++,
+        name: `cat ${id}`,
+        top: 10,
+        left: 10,
+    };
 };
 </script>
 
@@ -23,11 +36,11 @@ const handleClone = (data) => {
         <p class="title">components</p>
 
         <draggable
-            v-model="components"
-            group="people"
+            :list="components"
+            :group="{ name: GROUPNAME, pull: 'clone', put: false }"
             item-key="id"
             :sort="false"
-            @clone="handleClone"
+            :clone="handleClone"
         >
             <template #item="{ element }">
                 <div class="component-warp">{{ element.name }}</div>
@@ -57,5 +70,9 @@ const handleClone = (data) => {
     cursor: pointer;
     margin-bottom: 10px;
     user-select: none;
+}
+
+.test {
+    display: flex;
 }
 </style>
