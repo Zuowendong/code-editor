@@ -26,19 +26,15 @@ const handleMove = (evt, originalEvent) => {
             :move="handleMove"
         >
             <template #item="{ element }">
-                <div>
-                    <vue-drag-resize
-                        class="component-warp"
-                        :w="200"
-                        :h="40"
-                        :x="element.style.top"
-                        :y="element.style.left"
-                        v-on:resizing="resize"
-                        v-on:dragging="resize"
-                    >
-                        {{ element.name }}
-                    </vue-drag-resize>
-                </div>
+                <vue-drag-resize
+                    class="component-warp"
+                    :w="200"
+                    :h="40"
+                    :x="element.style.top"
+                    :y="element.style.left"
+                >
+                    <input class="input" type="text" :value="element.name" />
+                </vue-drag-resize>
             </template>
         </draggable>
     </div>
@@ -58,14 +54,13 @@ const handleMove = (evt, originalEvent) => {
     background-size: 28px 28px;
 }
 .component-warp {
-    position: absolute;
-    width: 100px;
-    height: 50px;
     border: 1px solid #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+}
+.input {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
     cursor: pointer;
-    user-select: none;
 }
 </style>
