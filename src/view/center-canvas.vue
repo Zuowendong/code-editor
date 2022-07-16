@@ -5,30 +5,51 @@ import VueDragResize from "vue-drag-resize";
 import { useComponentStore } from "../store/modules/component";
 import { useDragGroupStore } from "../store/modules/dragGroup";
 
-let components = reactive([
-    // { id: 1, name: "表单容器", top: 100, left: 160 },
-    // { id: 2, name: "输入框", top: 300, left: 260 },
-    // { id: 3, name: "下拉框", top: 500, left: 60 },
-    // { id: 4, name: "单选按钮组", top: 600, left: 560 },
-    // { id: 5, name: "复选按钮组", top: 800, left: 460 },
-]);
+let componentActive = ref(false);
+/**
+ * 右击菜单
+ * 根据事件对象中鼠标点击的位置，进行定位
+ */
+let menuVisible = ref(false);
+let menuPosition = ref({});
+const onContextMenu = (e) => {
+    componentActive.value = true;
+    menuVisible.value = true;
+    menuPosition.value.left = `${e.clientX - 204}px`; // 左侧栏宽度200， gap:4
+    menuPosition.value.top = `${e.clientY}px`;
+};
+/**
+ * 全局左击
+ */
+window.onclick = (e) => {
+    menuVisible.value = false;
+};
+
+let components = reactive([]);
 
 const dragGroupStore = useDragGroupStore();
 let GROUPNAME = dragGroupStore.dragGroupName;
+
+const handleChoose = () => {
+    console.log("123123");
+};
 </script>
 
 <template>
-    <div class="centerMain">
-        {{components}}
+    <div class="centerMain" @contextmenu.prevent="onContextMenu">
+        {{ components }}
         <draggable
+            :active="componentActive"
             :list="components"
             :group="{ name: GROUPNAME }"
             tag="transition-group"
             :item-key="id"
+            @choose="handleChoose"
         >
             <template #item="{ element }">
                 <vue-drag-resize
                     class="component-warp"
+                    :isActive="true"
                     :w="200"
                     :h="40"
                     :x="element.top"
@@ -38,6 +59,8 @@ let GROUPNAME = dragGroupStore.dragGroupName;
                 </vue-drag-resize>
             </template>
         </draggable>
+
+        <context-menu v-model="menuVisible" :position="menuPosition" />
     </div>
 </template>
 
@@ -63,5 +86,9 @@ let GROUPNAME = dragGroupStore.dragGroupName;
     padding: 10px;
     box-sizing: border-box;
     cursor: pointer;
+}
+
+.menu {
+    position: absolute;
 }
 </style>
