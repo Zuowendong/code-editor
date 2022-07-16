@@ -13,21 +13,44 @@ let components = reactive([
 ]);
 
 /**
- * 全局拖拽组名
+ * 全局拖拽group name
  */
 let GROUPNAME = "people";
 const dragGroupStore = useDragGroupStore();
 dragGroupStore.setdDragGroupName(GROUPNAME);
 
 const componentStore = useComponentStore();
+
+/**
+ * 拖拽结束事件
+ */
+let endLeft = ref("");
+let endTop = ref("");
+const handleEnd = (event) => {
+    endLeft.value = event.originalEvent.clientX - 204; // // 左侧栏宽度200， gap:4
+    endTop.value = event.originalEvent.clientY;
+
+    console.log("位置：", endLeft.value, "*", endTop.value);
+};
+
 let idGlobal = 8;
+
+
 const handleClone = ({ id }) => {
-    return {
-        id: idGlobal++,
-        name: `cat ${id}`,
-        top: 10,
-        left: 10,
+    let componentModule = {
+        width: 500,
+        height: 500,
+        top: 0,
+        left: 0,
+        resize: function (newRect) {
+            console.log(newRect, this);
+            this.width = newRect.width;
+            this.height = newRect.height;
+            this.top = newRect.top;
+            this.left = newRect.left;
+        },
     };
+    return componentModule;
 };
 </script>
 
@@ -41,6 +64,7 @@ const handleClone = ({ id }) => {
             item-key="id"
             :sort="false"
             :clone="handleClone"
+            @end="handleEnd"
         >
             <template #item="{ element }">
                 <div class="component-warp">{{ element.name }}</div>

@@ -33,6 +33,10 @@ let GROUPNAME = dragGroupStore.dragGroupName;
 const handleChoose = () => {
     console.log("123123");
 };
+
+const handleChange = (newRect, element) => {
+    element.resize(newRect);
+};
 </script>
 
 <template>
@@ -50,12 +54,16 @@ const handleChoose = () => {
                 <vue-drag-resize
                     class="component-warp"
                     :isActive="true"
-                    :w="200"
-                    :h="40"
+                    :w="element.width"
+                    :h="element.height"
                     :x="element.top"
                     :y="element.left"
+                    v-on:resizing="(e) => handleChange(e, element)"
+                    v-on:dragging="(e) => handleChange(e, element)"
                 >
                     <input class="input" type="text" :value="element.name" />
+                    <div>宽高：{{ element.width }} * {{ element.height }}</div>
+                    <div>位置：{{ element.top }} * {{ element.left }}</div>
                 </vue-drag-resize>
             </template>
         </draggable>
@@ -82,7 +90,6 @@ const handleChoose = () => {
 }
 .input {
     width: 100%;
-    height: 100%;
     padding: 10px;
     box-sizing: border-box;
     cursor: pointer;
