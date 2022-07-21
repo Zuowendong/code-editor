@@ -4,6 +4,7 @@ import draggable from "vuedraggable";
 import VueDragResize from "vue-drag-resize";
 import { useComponentStore } from "../store/modules/component";
 import { useDragGroupStore } from "../store/modules/dragGroup";
+import componentRender from "../utils/componentRender";
 
 let componentActive = ref(false);
 /**
@@ -64,6 +65,7 @@ const handleChange = (newRect, element) => {
                     <input class="input" type="text" :value="element.name" />
                     <div>宽高：{{ element.width }} * {{ element.height }}</div>
                     <div>位置：{{ element.top }} * {{ element.left }}</div>
+                    <!-- <div v-html="componentRender.renderDom()"></div> -->
                 </vue-drag-resize>
             </template>
         </draggable>

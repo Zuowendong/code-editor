@@ -1,15 +1,38 @@
+import containerRender from "./containerRender.jsx";
 class ComponentRender {
     constructor() {
         this.id = ""; // 组件id
-        this.type = ""; // 组件类型 容器 | 输入框 | 下拉框 ....
-        this.x = ""; // x坐标
-        this.y = ""; // y坐标
-        this.zIndex = ""; // 层级
+        this.type = "";
     }
 
-    // render() {
-    //     const dom = document.create
-    // }
+    /**
+     * 生成组件数据
+     */
+    renderData(id, name, type) {
+        this.id = id + Math.round(Math.random() * 1000);
+        this.type = type;
+        return {
+            width: 300,
+            height: 100,
+            top: 0,
+            left: 0,
+            type,
+            name,
+            resize: function (newRect) {
+                this.width = newRect.width;
+                this.height = newRect.height;
+                this.top = newRect.top;
+                this.left = newRect.left;
+            },
+        };
+    }
+
+    /**
+     * 生成组件dom
+     */
+    renderDom() {
+        return containerRender();
+    }
 }
 
 export default new ComponentRender();

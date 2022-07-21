@@ -1,15 +1,15 @@
 <script setup>
 import { ref, reactive } from "vue";
 import draggable from "vuedraggable";
-import { useComponentStore } from "../store/modules/component";
 import { useDragGroupStore } from "../store/modules/dragGroup";
+import componentRender from "../utils/componentRender";
 
 let components = reactive([
-    { id: 1, name: "表单容器" },
-    { id: 2, name: "输入框" },
-    { id: 3, name: "下拉框" },
-    { id: 4, name: "单选按钮组" },
-    { id: 5, name: "复选按钮组" },
+    { id: 1, name: "表单容器", type: "container" },
+    { id: 2, name: "输入框", type: "input" },
+    { id: 3, name: "下拉框", type: "select" },
+    { id: 4, name: "单选按钮组", type: "radio" },
+    { id: 5, name: "复选按钮组", type: "checkbox" },
 ]);
 
 /**
@@ -19,38 +19,8 @@ let GROUPNAME = "people";
 const dragGroupStore = useDragGroupStore();
 dragGroupStore.setdDragGroupName(GROUPNAME);
 
-const componentStore = useComponentStore();
-
-/**
- * 拖拽结束事件
- */
-let endLeft = ref("");
-let endTop = ref("");
-const handleEnd = (event) => {
-    endLeft.value = event.originalEvent.clientX - 204; // // 左侧栏宽度200， gap:4
-    endTop.value = event.originalEvent.clientY;
-
-    console.log("位置：", endLeft.value, "*", endTop.value);
-};
-
-let idGlobal = 8;
-
-
-const handleClone = ({ id }) => {
-    let componentModule = {
-        width: 500,
-        height: 500,
-        top: 0,
-        left: 0,
-        resize: function (newRect) {
-            console.log(newRect, this);
-            this.width = newRect.width;
-            this.height = newRect.height;
-            this.top = newRect.top;
-            this.left = newRect.left;
-        },
-    };
-    return componentModule;
+const handleClone = ({ id, name, type }) => {
+    return componentRender.renderData(id, name, type);
 };
 </script>
 
@@ -64,7 +34,6 @@ const handleClone = ({ id }) => {
             item-key="id"
             :sort="false"
             :clone="handleClone"
-            @end="handleEnd"
         >
             <template #item="{ element }">
                 <div class="component-warp">{{ element.name }}</div>

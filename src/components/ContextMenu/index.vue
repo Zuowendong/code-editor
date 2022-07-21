@@ -1,5 +1,5 @@
 <script>
-export default { name: "contextMenu" };
+export default { name: "ContextMenu" };
 </script>
 <script setup>
 import { reactive, ref, toRefs, watch } from "vue";
