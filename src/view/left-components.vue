@@ -2,10 +2,10 @@
 import { ref, reactive } from "vue";
 let components = reactive([
     { id: 1, name: "容器", type: "ZyfContainer" },
-    { id: 2, name: "输入框", type: "input" },
-    { id: 3, name: "下拉框", type: "select" },
-    { id: 4, name: "单选按钮组", type: "radio" },
-    { id: 5, name: "复选按钮组", type: "checkbox" },
+    { id: 2, name: "输入框", type: "ZyfInput" },
+    { id: 3, name: "下拉框", type: "ZyfSelect" },
+    { id: 4, name: "单选按钮组", type: "ZyfRadio" },
+    { id: 5, name: "复选按钮组", type: "ZyfCheckbox" },
 ]);
 
 /**
