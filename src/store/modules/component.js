@@ -1,21 +1,21 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+import { compTemplateData } from "../../utils/compTemplateData";
 
-export const useComponentStore = defineStore("component", () => {
-    let currentComponent = ref({});
-    const setCurrentComponent = (component) => {
-        currentComponent.value = component;
-    };
+export const useCompStore = defineStore("comp", () => {
+    let compsList = reactive([]);
 
-    let canvasComponents = ref([]);
-    const addCanvasComponent = (data) => {
-        canvasComponents.value.push(data);
+    const addComp = (compData) => {
+        compsList.push(
+            compTemplateData({
+                name: compData.name,
+                type: compData.type,
+            })
+        );
     };
 
     return {
-        currentComponent,
-        setCurrentComponent,
-        canvasComponents,
-        addCanvasComponent,
+        compsList,
+        addComp,
     };
 });

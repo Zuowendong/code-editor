@@ -1,20 +1,28 @@
 <script setup>
 import { reactive, ref } from "vue";
+import { useCompStore } from "../store/modules/component";
 
 /**
  * 拖入事件
  */
+const compStore = useCompStore();
 const compDrop = (e) => {
     if (e.dataTransfer) {
         const dropData = e.dataTransfer.getData("comp-drag");
-        console.log(1111111, JSON.parse(dropData));
+        compStore.addComp(JSON.parse(dropData));
     }
 };
 </script>
 
 <template>
     <div class="centerMain" @contextmenu.prevent="onContextMenu">
-        <div class="canvas" @dragover.prevent @drop="compDrop"></div>
+        <div class="canvas" @dragover.prevent @drop="compDrop">
+            {{ compStore.compsList }}
+
+            <div v-for="compItem in compStore.compsList" :key="compItem.uuid">
+                <component :is="compItem.type"></component>
+            </div>
+        </div>
     </div>
 </template>
 
