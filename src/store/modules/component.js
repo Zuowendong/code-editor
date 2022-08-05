@@ -7,6 +7,7 @@ export const useCompStore = defineStore("comp", () => {
         uuid: "",
         name: "",
         type: "",
+        props: {},
     });
 
     const addComp = (compData) => {

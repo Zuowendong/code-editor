@@ -25,6 +25,7 @@ const handleCompDrop = (e) => {
  * 移动事件
  */
 const handleMousedown = (e, item) => {
+    handleSwitchComp(item);
     // 记录点击初始位置
     const startX = e.clientX;
     const startY = e.clientY;
@@ -53,11 +54,7 @@ const handleMousedown = (e, item) => {
 };
 
 const handleSwitchComp = (compData) => {
-    compStore.setCurrComp({
-        uuid: compData.uuid,
-        name: compData.name,
-        type: compData.type,
-    });
+    compStore.setCurrComp(compData);
 };
 
 /**
@@ -89,10 +86,7 @@ const changeCompBoxStyle = (item) => {
                 @mousedown.stop.prevent="handleMousedown($event, compItem)"
                 @click="handleSwitchComp(compItem)"
             >
-                <component
-                    :is="compItem.type"
-                    v-bind="{ ...compItem.props }"
-                ></component>
+                <component :is="compItem.type"></component>
             </comp-box>
         </div>
     </div>

@@ -1,8 +1,16 @@
-<script setup></script>
+<script setup>
+import { computed, ref } from "vue";
+import { useCompStore } from "../store/modules/component";
+
+const compStore = useCompStore();
+let configCompName = computed(() => compStore.currentComp.type + "Config");
+const currentCompId = computed(() => compStore.currentComp.uuid);
+</script>
 
 <template>
     <div class="rightMain">
         <p class="title">property</p>
+        <component :is="configCompName" :key="currentCompId"></component>
     </div>
 </template>
 
