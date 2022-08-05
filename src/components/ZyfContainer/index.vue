@@ -14,15 +14,21 @@ const props = defineProps({
         type: Number,
         default: 50,
     },
+    text: {
+        type: String,
+        default: "容器",
+    },
 });
 
-let { width, height } = toRefs(props);
+let { width, height, text } = toRefs(props);
 
-// console.log(123123, aaa.value);
+defineExpose(props);
 </script>
 
 <template>
-    <div class="containerMain">这是一个容器组件{{ width }} * {{ height }}</div>
+    <div class="containerMain">
+        这是一个{{ text }}组件{{ width }} * {{ height }}
+    </div>
 </template>
 
 <style scoped>
@@ -33,7 +39,6 @@ let { width, height } = toRefs(props);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 5px;
     cursor: pointer;
 }
 </style>

@@ -53,8 +53,13 @@ const handleMousedown = (e, item) => {
     document.addEventListener("mouseup", mouseup);
 };
 
+const compRef = ref();
+console.log(123123, compRef.value);
 const handleSwitchComp = (compData) => {
     compStore.setCurrComp(compData);
+
+    console.log('222222222', compRef.value);
+    
 };
 
 /**
@@ -67,6 +72,8 @@ const changeCompBoxStyle = (item) => {
         left: `${item.props.left}px`,
     };
 };
+
+
 </script>
 
 <template>
@@ -76,7 +83,7 @@ const changeCompBoxStyle = (item) => {
             @dragover.prevent
             @drop.stop.prevent="handleCompDrop"
         >
-            {{ compStore.currentComp.uuid }}
+            当前组件： {{ compRef }}
             <comp-box
                 v-for="compItem in compStore.compsList"
                 :key="compItem.uuid"
@@ -86,7 +93,8 @@ const changeCompBoxStyle = (item) => {
                 @mousedown.stop.prevent="handleMousedown($event, compItem)"
                 @click="handleSwitchComp(compItem)"
             >
-                <component :is="compItem.type"></component>
+                {{ compItem }}
+                <component :is="compItem.type" :ref="compRef"></component>
             </comp-box>
         </div>
     </div>

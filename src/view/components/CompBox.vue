@@ -105,7 +105,7 @@ const currentCompId = computed(() => compStore.currentComp.uuid);
     border: 1px dashed #333;
 }
 .activeCompBox {
-    border-color: red !important;
+    border-color: #333 !important;
 }
 .shapePoint {
     z-index: 1;
