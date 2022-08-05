@@ -27,8 +27,8 @@ let { width, height } = toRefs(props);
 
 <style scoped>
 .containerMain {
-    width: 550px;
-    height: 250px;
+    width: 150px;
+    height: 50px;
     border: 1px solid #333;
     display: flex;
     align-items: center;

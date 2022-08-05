@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, toRefs } from "vue";
+import { useCompStore } from "../../store/modules/component";
 
 const props = defineProps({
     item: {
@@ -66,11 +67,22 @@ const usePointStyle = (pointItem, index, props) => {
 const handleMousedown = (e, item) => {
     e.preventDefault();
     e.stopPropagation();
-}
+};
+
+/**
+ * 激活
+ */
+const compStore = useCompStore();
+const currentCompId = computed(() => compStore.currentComp.uuid);
 </script>
 
 <template>
-    <div class="compBoxMain">
+    <div
+        :class="[
+            'compBoxMain',
+            item.uuid == currentCompId ? 'activeCompBox' : '',
+        ]"
+    >
         <slot></slot>
         <!-- 锚点 -->
         <!-- <div
@@ -87,6 +99,13 @@ const handleMousedown = (e, item) => {
 .compBoxMain {
     position: absolute;
     cursor: move;
+    border: 1px solid transparent;
+}
+.compBoxMain:hover {
+    border: 1px dashed #333;
+}
+.activeCompBox {
+    border-color: red !important;
 }
 .shapePoint {
     z-index: 1;

@@ -1,25 +1,34 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
-import { compTemplateData } from "../../utils/compTemplateData";
 
 export const useCompStore = defineStore("comp", () => {
     let compsList = reactive([]);
+    let currentComp = ref({
+        uuid: "",
+        name: "",
+        type: "",
+    });
 
     const addComp = (compData) => {
-        compsList.push(compTemplateData(compData));
+        compsList.push(compData);
     };
 
     const updateComp = (compData) => {
         const targetComp = compsList.find(
             (item) => item.uuid === compData.uuid
         );
-        targetComp.props = { ...compData.props };
-        console.log(111, compsList);
+        currentComp.value.props = { ...targetComp.props };
+    };
+
+    const setCurrComp = (comp) => {
+        currentComp.value = comp;
     };
 
     return {
         compsList,
+        currentComp,
         addComp,
         updateComp,
+        setCurrComp,
     };
 });

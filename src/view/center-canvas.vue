@@ -1,8 +1,9 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { throttle } from "lodash-es";
 
 import { useCompStore } from "../store/modules/component";
+import { compTemplateData } from "../utils/compTemplateData";
 
 import CompBox from "./components/CompBox.vue";
 
@@ -10,10 +11,13 @@ import CompBox from "./components/CompBox.vue";
  * 拖入事件
  */
 const compStore = useCompStore();
-const compDrop = (e) => {
+
+const handleCompDrop = (e) => {
     if (e.dataTransfer) {
-        const dropData = e.dataTransfer.getData("comp-drag");
-        compStore.addComp(JSON.parse(dropData));
+        const dropData = JSON.parse(e.dataTransfer.getData("comp-drag"));
+        const compData = compTemplateData(dropData);
+        compStore.addComp(compData);
+        compStore.setCurrComp(compData);
     }
 };
 
@@ -21,9 +25,6 @@ const compDrop = (e) => {
  * 移动事件
  */
 const handleMousedown = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
-
     // 记录点击初始位置
     const startX = e.clientX;
     const startY = e.clientY;
@@ -51,6 +52,14 @@ const handleMousedown = (e, item) => {
     document.addEventListener("mouseup", mouseup);
 };
 
+const handleSwitchComp = (compData) => {
+    compStore.setCurrComp({
+        uuid: compData.uuid,
+        name: compData.name,
+        type: compData.type,
+    });
+};
+
 /**
  * 修改组件box样式
  * 宽高位置
@@ -65,16 +74,20 @@ const changeCompBoxStyle = (item) => {
 
 <template>
     <div class="centerMain" @contextmenu.prevent="onContextMenu">
-        <div class="canvas" @dragover.prevent @drop="compDrop">
-            {{ compStore.compsList }}
-
+        <div
+            class="canvas"
+            @dragover.prevent
+            @drop.stop.prevent="handleCompDrop"
+        >
+            {{ compStore.currentComp.uuid }}
             <comp-box
                 v-for="compItem in compStore.compsList"
                 :key="compItem.uuid"
                 :item="compItem"
                 class="compBox"
                 :style="changeCompBoxStyle(compItem)"
-                @mousedown="handleMousedown($event, compItem)"
+                @mousedown.stop.prevent="handleMousedown($event, compItem)"
+                @click="handleSwitchComp(compItem)"
             >
                 <component
                     :is="compItem.type"
