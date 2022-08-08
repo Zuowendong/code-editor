@@ -1,17 +1,32 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { useCompStore } from "../store/modules/component";
+import { formatCompProp } from "../utils/formatComp";
 
 const compStore = useCompStore();
-// let configCompName = computed(() => compStore.currentComp.type + "Config");
-// const currentCompId = computed(() => compStore.currentComp.uuid);
+let compAttrs = computed(() => compStore.currentComp.props);
 
+const setMap = (key, val) => {
+    console.log("454545", { [key]: val });
+    return { [key]: val };
+};
 </script>
 
 <template>
     <div class="rightMain">
         <p class="title">property</p>
-        <component :is="configCompName" :key="currentCompId"></component>
+        {{ formatCompProp(compAttrs) }}
+
+        <div v-for="(val, key, i) of formatCompProp(compAttrs)" :key="i">
+            <!-- {{ key }} -- {{ val }} -->
+
+            <component
+                :is="val.type"
+                :key="val.key"
+                v-bind="{ ...setMap(val.key, val.value) }"
+            ></component>
+        </div>
+        <!-- <component :is="configCompName" :key="currentCompId"></component> -->
     </div>
 </template>
 

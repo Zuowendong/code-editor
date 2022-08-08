@@ -31,3 +31,19 @@ export const formatProps = (props) => {
     });
     return formatStyle(resObj);
 };
+
+// 处理生成的 属性组件
+export const formatCompProp = (props) => {
+    let resObj = {};
+    if (props) {
+        Object.values(props).forEach((p) => {
+            if (p && p.attrs) {
+                Object.keys(p.attrs).forEach((attr) => {
+                    resObj[attr] = p.attrs[attr];
+                });
+            }
+        });
+    }
+
+    return resObj;
+};
