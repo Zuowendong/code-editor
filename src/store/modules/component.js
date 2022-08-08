@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 
-export const useCompStore = defineStore("comp", () => {
+export const useCompStore = defineStore("useCompStore", () => {
     let compsList = reactive([]);
     let currentComp = ref({
         uuid: "",

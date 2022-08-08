@@ -2,10 +2,26 @@
 export default { name: "XuiBase" };
 </script>
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, nextTick } from "vue";
 import { useCompStore } from "../store/modules/component";
 
 const compStore = useCompStore();
+const style = compStore.currentComp.props;
+let formData = ref({
+    width: style.width || 0,
+    height: style.height || 0,
+    left: style.left || 0,
+    top: style.top || 0,
+});
+
+nextTick(() => {
+    // 赋值组件默认宽高
+    const uuid = compStore.currentComp.uuid;
+    const componentDom = document.getElementsByClassName(uuid)[0];
+    const rawWidth = componentDom.style.width;
+    const rawHeight = componentDom.style.height;
+    console.log(111111, rawWidth, rawWidth);
+});
 </script>
 
 <template>
@@ -14,7 +30,7 @@ const compStore = useCompStore();
             <el-form-item label="宽度">
                 <el-input-number
                     class="formItemVal"
-                    v-model="compStore.currentComp.props.width"
+                    v-model="formData.width"
                     :min="1"
                     controls-position="right"
                 />
@@ -22,7 +38,7 @@ const compStore = useCompStore();
             <el-form-item label="高度">
                 <el-input-number
                     class="formItemVal"
-                    v-model="compStore.currentComp.props.height"
+                    v-model="formData.height"
                     :min="1"
                     controls-position="right"
                 />
@@ -31,13 +47,13 @@ const compStore = useCompStore();
                 <div class="formTwoItem">
                     <el-input-number
                         class="formItemVal"
-                        v-model="compStore.currentComp.props.left"
+                        v-model="formData.left"
                         :min="1"
                         controls-position="right"
                     />
                     <el-input-number
                         class="formItemVal"
-                        v-model="compStore.currentComp.props.top"
+                        v-model="formData.top"
                         :min="1"
                         controls-position="right"
                     />

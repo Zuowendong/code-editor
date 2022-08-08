@@ -1,10 +1,11 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useCompStore } from "../store/modules/component";
 
 const compStore = useCompStore();
-let configCompName = computed(() => compStore.currentComp.type + "Config");
-const currentCompId = computed(() => compStore.currentComp.uuid);
+// let configCompName = computed(() => compStore.currentComp.type + "Config");
+// const currentCompId = computed(() => compStore.currentComp.uuid);
+
 </script>
 
 <template>

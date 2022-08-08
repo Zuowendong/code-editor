@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive } from "vue";
+
 let components = reactive([
     { id: 1, name: "容器", type: "ZyfContainer" },
     { id: 2, name: "输入框", type: "ZyfInput" },
@@ -11,7 +12,7 @@ let components = reactive([
 /**
  * 开始拖拽
  */
-const handleDragStart = (e, item) => {
+const handleDragStart = async (e, item) => {
     e.dataTransfer &&
         e.dataTransfer.setData(
             "comp-drag",

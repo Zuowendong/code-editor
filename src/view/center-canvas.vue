@@ -4,18 +4,44 @@ import { throttle } from "lodash-es";
 
 import { useCompStore } from "../store/modules/component";
 import { compTemplateData } from "../utils/compTemplateData";
+import { formatStyle, formatProps } from "../utils/formatComp";
+import { getCompPorps } from "../editor-comp/index";
 
 import CompBox from "./components/CompBox.vue";
+
+const handleProps = async (item) => {
+    const compProps = await getCompPorps(item);
+    let compPropMap = {};
+    compProps.properties.forEach((el) => {
+        let attrMap = {};
+        if (el.attrs) {
+            el.attrs.forEach((attrItem) => {
+                attrMap[attrItem.key] = attrItem;
+            });
+        }
+        compPropMap[el.id] = {
+            ...el,
+            attrs: attrMap,
+        };
+    });
+
+    return compPropMap;
+};
 
 /**
  * 拖入事件
  */
 const compStore = useCompStore();
 
-const handleCompDrop = (e) => {
+const handleCompDrop = async (e) => {
     if (e.dataTransfer) {
         const dropData = JSON.parse(e.dataTransfer.getData("comp-drag"));
-        const compData = compTemplateData(dropData);
+
+        const propData = await handleProps(dropData);
+        const compData = compTemplateData({
+            ...dropData,
+            props: propData,
+        });
         compStore.addComp(compData);
         compStore.setCurrComp(compData);
     }
@@ -37,10 +63,8 @@ const handleMousedown = (e, item) => {
     const mousemove = throttle((moveEvent) => {
         const currtCompLeft = moveEvent.clientX - 204 - boxOffsetX;
         const currtCompTop = moveEvent.clientY - boxOffsetY;
-        item.props = {
-            left: currtCompLeft,
-            top: currtCompTop,
-        };
+        item.props.base.attrs.axisX.value = currtCompLeft;
+        item.props.base.attrs.axisY.value = currtCompTop;
         compStore.updateComp(item);
     }, 30);
 
@@ -53,13 +77,8 @@ const handleMousedown = (e, item) => {
     document.addEventListener("mouseup", mouseup);
 };
 
-const compRef = ref();
-console.log(123123, compRef.value);
 const handleSwitchComp = (compData) => {
     compStore.setCurrComp(compData);
-
-    console.log('222222222', compRef.value);
-    
 };
 
 /**
@@ -68,12 +87,10 @@ const handleSwitchComp = (compData) => {
  */
 const changeCompBoxStyle = (item) => {
     return {
-        top: `${item.props.top}px`,
-        left: `${item.props.left}px`,
+        top: `${item.props.base.attrs.axisY.value}px`,
+        left: `${item.props.base.attrs.axisX.value}px`,
     };
 };
-
-
 </script>
 
 <template>
@@ -83,7 +100,7 @@ const changeCompBoxStyle = (item) => {
             @dragover.prevent
             @drop.stop.prevent="handleCompDrop"
         >
-            当前组件： {{ compRef }}
+            当前组件： {{ formatProps(compStore.currentComp.props) }}
             <comp-box
                 v-for="compItem in compStore.compsList"
                 :key="compItem.uuid"
@@ -93,8 +110,10 @@ const changeCompBoxStyle = (item) => {
                 @mousedown.stop.prevent="handleMousedown($event, compItem)"
                 @click="handleSwitchComp(compItem)"
             >
-                {{ compItem }}
-                <component :is="compItem.type" :ref="compRef"></component>
+                <component
+                    :is="compItem.type"
+                    v-bind="{ ...formatProps(compItem.props) }"
+                ></component>
             </comp-box>
         </div>
     </div>
