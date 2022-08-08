@@ -16,18 +16,6 @@ export const properties = [
                 value: 50,
             },
             {
-                name: "x坐标",
-                key: "axisX",
-                type: "xui-input-number",
-                value: 300,
-            },
-            {
-                name: "y坐标",
-                key: "axisY",
-                type: "xui-input-number",
-                value: 50,
-            },
-            {
                 name: "文本内容",
                 key: "text",
                 type: "xui-input",

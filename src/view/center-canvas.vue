@@ -11,6 +11,7 @@ import CompBox from "./components/CompBox.vue";
 
 const handleProps = async (item) => {
     const compProps = await getCompPorps(item);
+
     let compPropMap = {};
     compProps.properties.forEach((el) => {
         let attrMap = {};
@@ -42,6 +43,23 @@ const handleCompDrop = async (e) => {
             ...dropData,
             props: propData,
         });
+
+        const startX = e.clientX - 204;
+        const startY = e.clientY;
+
+        compData.props.base.attrs.axisX = {
+            key: 'axisX',
+            name: "x坐标",
+            type: "xui-input-number",
+            value: startX,
+        };
+        compData.props.base.attrs.axisY = {
+            key: 'axisY',
+            name: "y坐标",
+            type: "xui-input-number",
+            value: startY,
+        };
+
         compStore.addComp(compData);
         compStore.setCurrComp(compData);
     }

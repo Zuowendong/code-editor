@@ -7,7 +7,7 @@ const compStore = useCompStore();
 let compAttrs = computed(() => compStore.currentComp.props);
 
 const setMap = (key, val) => {
-    console.log("454545", { [key]: val });
+    // console.log("454545", { [key]: val });
     return { [key]: val };
 };
 </script>

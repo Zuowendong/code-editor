@@ -10,3 +10,4 @@ export const getCompPorps = async (targetData) => {
         return compProps;
     }
 };
+
