@@ -7,7 +7,6 @@ const compStore = useCompStore();
 let compAttrs = computed(() => compStore.currentComp.props);
 
 const setMap = (key, val) => {
-    // console.log("454545", { [key]: val });
     return { [key]: val };
 };
 </script>
@@ -15,18 +14,20 @@ const setMap = (key, val) => {
 <template>
     <div class="rightMain">
         <p class="title">property</p>
-        {{ formatCompProp(compAttrs) }}
+        <!-- {{ formatCompProp(compAttrs) }} -->
 
-        <div v-for="(val, key, i) of formatCompProp(compAttrs)" :key="i">
-            <!-- {{ key }} -- {{ val }} -->
-
+        <div
+            class="propWrap"
+            v-for="(val, key, i) of formatCompProp(compAttrs)"
+            :key="i"
+        >
+            <span class="label">{{ val.name }}：</span>
             <component
                 :is="val.type"
                 :key="val.key"
-                v-bind="{ ...setMap(val.key, val.value) }"
+                v-bind="{ ...setMap('value', val.value) }"
             ></component>
         </div>
-        <!-- <component :is="configCompName" :key="currentCompId"></component> -->
     </div>
 </template>
 
@@ -38,5 +39,15 @@ const setMap = (key, val) => {
     margin: 10px 0;
     padding-bottom: 6px;
     border-bottom: 1px solid #ddd;
+}
+.propWrap {
+    height: 40px;
+    display: grid;
+    grid-template-columns: 100px auto;
+    column-gap: 16px;
+    align-items: center;
+}
+.label {
+    text-align: right;
 }
 </style>

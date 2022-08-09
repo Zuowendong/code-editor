@@ -6,7 +6,7 @@ export default { name: "ZyfContainer" };
 import { onMounted, ref, toRefs, watch } from "vue";
 
 const props = defineProps({
-    width: { type: String, default: "" },
+    width: { type: Number, default: 0 },
     height: { type: String, default: "" },
     text: { type: String, default: "" },
 });

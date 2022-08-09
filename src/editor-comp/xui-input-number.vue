@@ -5,20 +5,15 @@ export default { name: "XuiInputNumber" };
 import { computed, ref, toRefs } from "vue";
 
 const props = defineProps({
-    name: { type: String, default: "" },
     value: { type: Number, default: 0 },
-    width: { type: Number, default: 0 },
 });
 
-let { name, value } = toRefs(props);
-
-let width = ref(0);
+let { value } = toRefs(props);
 </script>
 
 <template>
     <div class="xuiInputNumberMain">
-        <div>{{ name }}</div>
-        <el-input-number v-model="width" :min="1" controls-position="right" />
+        <el-input-number v-model="value" :min="1" controls-position="right" />
     </div>
 </template>
 

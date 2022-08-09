@@ -118,7 +118,7 @@ const changeCompBoxStyle = (item) => {
             @dragover.prevent
             @drop.stop.prevent="handleCompDrop"
         >
-            当前组件： {{ formatProps(compStore.currentComp.props) }}
+            当前组件： {{ compStore.compsList }}
             <comp-box
                 v-for="compItem in compStore.compsList"
                 :key="compItem.uuid"
