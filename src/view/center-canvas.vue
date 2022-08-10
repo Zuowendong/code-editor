@@ -140,6 +140,7 @@ const handleMousedown = (e, item) => {
 };
 
 const handleSwitchComp = (compData) => {
+    console.log(6666666666, compData);
     compStore.setCurrComp(compData);
 };
 
@@ -170,7 +171,7 @@ const changeCompBoxStyle = (item) => {
                 class="compBox"
                 :style="changeCompBoxStyle(compItem)"
                 @mousedown.stop.prevent="handleMousedown($event, compItem)"
-                @click="handleSwitchComp(compItem)"
+                @click.stop.prevent="handleSwitchComp(compItem)"
                 @dragover.prevent
                 @drop.stop.prevent="handleContainerDrop($event, compItem)"
             >
@@ -184,6 +185,7 @@ const changeCompBoxStyle = (item) => {
                             :key="childItem.uuid"
                             :is="childItem.type"
                             v-bind="{ ...formatProps(childItem.props) }"
+                            @click.stop.prevent="handleSwitchComp(childItem)"
                         ></component>
                     </template>
                 </component>
