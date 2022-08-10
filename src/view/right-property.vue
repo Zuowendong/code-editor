@@ -9,13 +9,15 @@ let compAttrs = computed(() => compStore.currentComp.props);
 const setMap = (key, val) => {
     return { [key]: val };
 };
+
+const updateCompProps = (val) => {
+    console.log(22222222, val);
+};
 </script>
 
 <template>
     <div class="rightMain">
         <p class="title">property</p>
-        <!-- {{ formatCompProp(compAttrs) }} -->
-
         <div
             class="propWrap"
             v-for="(val, key, i) of formatCompProp(compAttrs)"
@@ -25,7 +27,8 @@ const setMap = (key, val) => {
             <component
                 :is="val.type"
                 :key="val.key"
-                v-bind="{ ...setMap('value', val.value) }"
+                v-bind="{ ...setMap('val', val) }"
+                @updateCompProps="() => updateCompProps(event, val)"
             ></component>
         </div>
     </div>
@@ -46,6 +49,7 @@ const setMap = (key, val) => {
     grid-template-columns: 100px auto;
     column-gap: 16px;
     align-items: center;
+    padding-right: 50px;
 }
 .label {
     text-align: right;
