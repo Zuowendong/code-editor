@@ -2,10 +2,10 @@
 export default { name: "XuiInputNumber" };
 </script>
 <script setup>
-import { computed, ref, toRefs } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 
 const props = defineProps({
-    val: {
+    modelVal: {
         type: Object,
         default: () => {
             return {};
@@ -13,30 +13,43 @@ const props = defineProps({
     },
 });
 
-let { val } = toRefs(props);
+let { modelVal } = toRefs(props);
 const emit = defineEmits(["updateCompProps"]);
 
-const handleChange = (val) => {
-    console.log(123123, val);
-    emit("updateCompProps", val);
+const handleChange = (num, val) => {
+    emit("updateCompProps", {
+        ...val,
+        value: num,
+    });
 };
 
-let num = ref(val.value.value);
+let num = ref(modelVal.value.value);
+watch(
+    () => props.modelVal,
+    (val) => {
+        num.value = val.value;
+    },
+    { deep: true }
+);
 </script>
 
 <template>
     <div class="xuiInputNumberMain">
-        {{val}}
+        {{ val }}
         <el-input-number
             class="inputNumber"
             v-model="num"
             :min="1"
-            @change="handleChange"
+            controls-position="right"
+            @change="handleChange(num, modelVal)"
         />
     </div>
 </template>
 
 <style scoped>
+.xuiInputNumberMain {
+    /* height: 40px; */
+}
 .inputNumber {
     width: 100%;
 }

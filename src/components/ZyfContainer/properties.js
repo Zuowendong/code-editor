@@ -15,6 +15,18 @@ export const properties = [
                 type: "xui-input-number",
                 value: 50,
             },
+        ],
+    },
+    {
+        name: "布局配置",
+        id: "layout",
+        attrs: [
+            {
+                name: "行列",
+                key: "width",
+                type: "xui-input-number",
+                value: 300,
+            },
             {
                 name: "文本内容",
                 key: "text",

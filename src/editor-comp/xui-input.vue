@@ -2,19 +2,53 @@
 export default { name: "XuiInput" };
 </script>
 <script setup>
-import { computed, ref, toRefs } from "vue";
+import { computed, ref, toRefs, watch } from "vue";
 
 const props = defineProps({
-    value: { type: Number, default: 0 },
+    modelVal: {
+        type: Object,
+        default: () => {
+            return {};
+        },
+    },
 });
 
-let { value } = toRefs(props);
+let { modelVal } = toRefs(props);
+const emit = defineEmits(["updateCompProps"]);
+
+const handleChange = (text, val) => {
+    emit("updateCompProps", {
+        ...val,
+        value: text,
+    });
+};
+
+let text = ref(modelVal.value.value);
+watch(
+    () => props.modelVal,
+    (val) => {
+        text.value = val.value;
+    },
+    { deep: true }
+);
 </script>
 
 <template>
     <div class="xuiInputMain">
-        <el-input v-model="value" />
+        {{ val }}
+        <el-input
+            class="input"
+            v-model="text"
+            :min="1"
+            @input="handleChange(text, modelVal)"
+        />
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.xuiInputMain {
+}
+.input {
+    width: 100%;
+}
+</style>

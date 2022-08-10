@@ -33,15 +33,20 @@ export const formatProps = (props) => {
 };
 
 // 处理生成的 属性组件
-export const formatCompProp = (props) => {
+export const formatCompProp = (attrs) => {
+    let resObj = {};
+    Object.keys(attrs).forEach((attrKey) => {
+        resObj[attrKey] = attrs[attrKey];
+    });
+
+    return resObj;
+};
+
+export const formatCompPropCatalog = (props) => {
     let resObj = {};
     if (props) {
         Object.values(props).forEach((p) => {
-            if (p && p.attrs) {
-                Object.keys(p.attrs).forEach((attr) => {
-                    resObj[attr] = p.attrs[attr];
-                });
-            }
+            resObj[p.id] = p;
         });
     }
 
