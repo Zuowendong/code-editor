@@ -1,30 +1,20 @@
 <template>
-    <el-dialog
-        v-model="modelValue"
-        title="投诉信息登记"
-        :close-on-click-modal="false"
-        @close="onClose"
-    >
-        <el-form
-            ref="formRef"
-            :model="formData"
-            :rules="rules"
-            label-width="100px"
-        >
-            <div class="content"></div>
-        </el-form>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="onClose">取消</el-button>
-                <el-button type="primary" @click="onSubmit">保存</el-button>
-            </div>
-        </template>
-    </el-dialog>
+    <el-form ref="formRef" :model="formData" :rules="rules" label-width="100px">
+        <div class="content">
+            <el-form-item label="姓名" prop="name">
+                <el-input v-model="formData.name"></el-input>
+            </el-form-item>
+            <el-form-item label="年龄" prop="age">
+                <el-input-number v-model="formData.age"></el-input-number>
+            </el-form-item>
+        </div>
+    </el-form>
 </template>
 <style lang="scss" scoped>
 .content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 14px;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    column-gap: 10px;
 }
 </style>
