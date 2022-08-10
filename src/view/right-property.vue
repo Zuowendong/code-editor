@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useCompStore } from "../store/modules/component";
 import { formatCompProp, formatCompPropCatalog } from "../utils/formatComp";
+import { formCodeTemp } from "../utils/server";
 
 const compStore = useCompStore();
 let compAttrs = computed(() => compStore.currentComp.props);
@@ -17,11 +18,20 @@ const updateCompProps = (newCompProp) => {
         }
     });
 };
+
+const handleCodeTemp = () => {
+    formCodeTemp(compStore.compsList[0]);
+};
 </script>
 
 <template>
     <div class="rightMain">
-        <p class="title">property</p>
+        <p class="title">
+            <span class="titleText">property</span>
+            <el-button type="primary" @click="handleCodeTemp"
+                >代码模板</el-button
+            >
+        </p>
         <div
             v-for="cataItem in formatCompPropCatalog(compAttrs)"
             :key="cataItem.id"
@@ -77,5 +87,8 @@ const updateCompProps = (newCompProp) => {
 }
 .label {
     text-align: right;
+}
+.titleText {
+    margin-right: 20px;
 }
 </style>
