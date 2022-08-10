@@ -1,9 +1,7 @@
 // 组件数据标准model
-export const compTemplateData = ({ name, type, props }) => {
+export const compTemplateData = (...args) => {
     return {
-        uuid: `${type}_${Date.now()}`,
-        name,
-        type,
-        props,
+        ...args[0],
+        uuid: `${args[0].type}_${Date.now()}`,
     };
 };

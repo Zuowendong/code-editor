@@ -9,6 +9,9 @@ import { getCompPorps } from "../editor-comp/index";
 
 import CompBox from "./components/CompBox.vue";
 
+/**
+ * 属性处理
+ */
 const handleProps = async (item) => {
     const compProps = await getCompPorps(item);
 
@@ -39,22 +42,25 @@ const handleCompDrop = async (e) => {
         const dropData = JSON.parse(e.dataTransfer.getData("comp-drag"));
 
         const propData = await handleProps(dropData);
-        const compData = compTemplateData({
+
+        const compDataModle = {
             ...dropData,
             props: propData,
-        });
+        };
+        if (dropData.type === "ZyfContainer") compDataModle.children = [];
+        const compData = compTemplateData(compDataModle);
 
         const startX = e.clientX - 204;
         const startY = e.clientY;
 
         compData.props.base.attrs.axisX = {
-            key: 'axisX',
+            key: "axisX",
             name: "x坐标",
             type: "xui-input-number",
             value: startX,
         };
         compData.props.base.attrs.axisY = {
-            key: 'axisY',
+            key: "axisY",
             name: "y坐标",
             type: "xui-input-number",
             value: startY,
@@ -62,6 +68,44 @@ const handleCompDrop = async (e) => {
 
         compStore.addComp(compData);
         compStore.setCurrComp(compData);
+    }
+};
+
+/**
+ * 容器组件内拖入事件
+ */
+const handleContainerDrop = async (e, compItem) => {
+    if (compItem.type !== "ZyfContainer") return;
+    if (e.dataTransfer) {
+        const dropData = JSON.parse(e.dataTransfer.getData("comp-drag"));
+        const propData = await handleProps(dropData);
+        const compData = compTemplateData({
+            ...dropData,
+            props: propData,
+        });
+        compStore.updateCompChildren(compItem.uuid, compData);
+        compStore.setCurrComp(compData);
+
+        // TODO: 组件内自由拖动
+
+        // const startX = e.clientX - 204;
+        // const startY = e.clientY;
+
+        // compData.props.base.attrs.axisX = {
+        //     key: "axisX",
+        //     name: "x坐标",
+        //     type: "xui-input-number",
+        //     value: startX,
+        // };
+        // compData.props.base.attrs.axisY = {
+        //     key: "axisY",
+        //     name: "y坐标",
+        //     type: "xui-input-number",
+        //     value: startY,
+        // };
+
+        // compStore.addComp(compData);
+        // compStore.setCurrComp(compData);
     }
 };
 
@@ -83,7 +127,7 @@ const handleMousedown = (e, item) => {
         const currtCompTop = moveEvent.clientY - boxOffsetY;
         item.props.base.attrs.axisX.value = currtCompLeft;
         item.props.base.attrs.axisY.value = currtCompTop;
-        compStore.updateComp(item);
+        compStore.updateCompProps(item);
     }, 30);
 
     const mouseup = () => {
@@ -118,7 +162,7 @@ const changeCompBoxStyle = (item) => {
             @dragover.prevent
             @drop.stop.prevent="handleCompDrop"
         >
-            当前组件： {{ compStore.compsList }}
+            <!-- 当前组件： {{ compStore.compsList }} -->
             <comp-box
                 v-for="compItem in compStore.compsList"
                 :key="compItem.uuid"
@@ -127,11 +171,22 @@ const changeCompBoxStyle = (item) => {
                 :style="changeCompBoxStyle(compItem)"
                 @mousedown.stop.prevent="handleMousedown($event, compItem)"
                 @click="handleSwitchComp(compItem)"
+                @dragover.prevent
+                @drop.stop.prevent="handleContainerDrop($event, compItem)"
             >
                 <component
                     :is="compItem.type"
                     v-bind="{ ...formatProps(compItem.props) }"
-                ></component>
+                >
+                    <template v-if="compItem.children">
+                        <component
+                            v-for="childItem in compItem.children"
+                            :key="childItem.uuid"
+                            :is="childItem.type"
+                            v-bind="{ ...formatProps(childItem.props) }"
+                        ></component>
+                    </template>
+                </component>
             </comp-box>
         </div>
     </div>

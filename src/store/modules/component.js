@@ -14,11 +14,16 @@ export const useCompStore = defineStore("useCompStore", () => {
         compsList.push(compData);
     };
 
-    const updateComp = (compData) => {
+    const updateCompProps = (compData) => {
         const targetComp = compsList.find(
             (item) => item.uuid === compData.uuid
         );
         currentComp.value.props = { ...targetComp.props };
+    };
+
+    const updateCompChildren = (pId, childComp) => {
+        const parentComp = compsList.find((item) => item.uuid === pId);
+        parentComp.children.push(childComp);
     };
 
     const setCurrComp = (comp) => {
@@ -29,7 +34,8 @@ export const useCompStore = defineStore("useCompStore", () => {
         compsList,
         currentComp,
         addComp,
-        updateComp,
+        updateCompProps,
         setCurrComp,
+        updateCompChildren,
     };
 });

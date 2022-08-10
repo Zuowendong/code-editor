@@ -34,8 +34,9 @@ watch(
 
 <template>
     <div class="containerMain">
-        <!-- 这是一个 {{ text }} 组件{{ width }} * {{ height }} -->
-        <div class="layout"></div>
+        <div class="layout">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
@@ -55,5 +56,7 @@ watch(
     display: grid;
     grid-template-columns: v-bind(columnStyle);
     grid-template-rows: v-bind(rowStyle);
+    align-items: center;
+    justify-items: center;
 }
 </style>

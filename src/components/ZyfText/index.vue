@@ -6,8 +6,8 @@ export default { name: "ZyfText" };
 import { onMounted, ref, toRefs, watch } from "vue";
 
 const props = defineProps({
-    width: { type: Number, default: 220 },
-    height: { type: Number, default: 50 },
+    width: { type: Number, default: 100 },
+    height: { type: Number, default: 30 },
     text: { type: String, default: "" },
 });
 
