@@ -113,6 +113,8 @@ const handleContainerDrop = async (e, compItem) => {
  * 移动事件
  */
 const handleMousedown = (e, item) => {
+    console.log('4343443');
+    
     handleSwitchComp(item);
     // 记录点击初始位置
     const startX = e.clientX;
