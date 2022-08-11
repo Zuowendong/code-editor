@@ -1,26 +1,27 @@
 <script setup>
 import { ref, reactive } from "vue";
-import draggable from "vuedraggable";
-import { useDragGroupStore } from "../store/modules/dragGroup";
-import componentRender from "../utils/componentRender";
 
 let components = reactive([
-    { id: 1, name: "表单容器", type: "container" },
-    { id: 2, name: "输入框", type: "input" },
-    { id: 3, name: "下拉框", type: "select" },
-    { id: 4, name: "单选按钮组", type: "radio" },
-    { id: 5, name: "复选按钮组", type: "checkbox" },
+    { id: 1, name: "容器", type: "ZyfContainer" },
+    { id: 2, name: "文字标签", type: "ZyfText" },
+    { id: 3, name: "输入框", type: "ZyfInput" },
+    { id: 4, name: "下拉框", type: "ZyfSelect" },
+    { id: 5, name: "单选按钮组", type: "ZyfRadio" },
+    { id: 6, name: "复选按钮组", type: "ZyfCheckbox" },
 ]);
 
 /**
- * 全局拖拽group name
+ * 开始拖拽
  */
-let GROUPNAME = "people";
-const dragGroupStore = useDragGroupStore();
-dragGroupStore.setdDragGroupName(GROUPNAME);
-
-const handleClone = ({ id, name, type }) => {
-    return componentRender.renderData(id, name, type);
+const handleDragStart = async (e, item) => {
+    e.dataTransfer &&
+        e.dataTransfer.setData(
+            "comp-drag",
+            JSON.stringify({
+                name: item.name,
+                type: item.type,
+            })
+        );
 };
 </script>
 
@@ -28,17 +29,15 @@ const handleClone = ({ id, name, type }) => {
     <div class="leftMain">
         <p class="title">components</p>
 
-        <draggable
-            :list="components"
-            :group="{ name: GROUPNAME, pull: 'clone', put: false }"
-            item-key="id"
-            :sort="false"
-            :clone="handleClone"
+        <div
+            class="compBox"
+            v-for="item in components"
+            :key="item.id"
+            draggable="true"
+            @dragstart="handleDragStart($event, item)"
         >
-            <template #item="{ element }">
-                <div class="component-warp">{{ element.name }}</div>
-            </template>
-        </draggable>
+            {{ item.name }}
+        </div>
     </div>
 </template>
 
@@ -53,19 +52,15 @@ const handleClone = ({ id, name, type }) => {
     padding-bottom: 6px;
     border-bottom: 1px solid #ddd;
 }
-.component-warp {
+.compBox {
     width: 100px;
-    height: 50px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    margin: 10px 0;
+    border-radius: 5px;
     border: 1px solid #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    margin-bottom: 10px;
     user-select: none;
-}
-
-.test {
-    display: flex;
+    cursor: pointer;
 }
 </style>

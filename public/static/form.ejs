@@ -1,0 +1,24 @@
+<template>
+    <el-form ref="formRef" :model="formData" :rules="rules" label-width="100px">
+        <div class="content">
+            <% config.formItems.forEach(function(item){ %>
+                <el-form-item label="<%= item.label %>" prop="<%= item.prop %>">
+                    <<%= item.tag %> v-model="formData.<%= item.prop %>"></<%= item.tag %>>
+                </el-form-item>
+            <% }); %>
+        </div>
+    </el-form>
+</template>
+
+<style lang="scss" scoped>
+    .content {
+        display: grid;
+        <% if (config.ranks.cNum) { %>
+            grid-template-columns: repeat(<%= config.ranks.cNum / 2 %>, 1fr);
+        <% } %>
+        <% if (config.ranks.rNum) { %>
+            grid-template-rows: repeat(<%= config.ranks.rNum / 2 %>, 1fr);
+        <% } %>
+        column-gap: 10px;
+    }
+</style>

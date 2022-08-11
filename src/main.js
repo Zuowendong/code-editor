@@ -3,6 +3,9 @@ import { forEach } from "lodash-es";
 import App from "./App.vue";
 import { store } from "./store";
 
+/**
+ * 全局注册组件
+ */
 import * as components from "./components/index";
 const createComponents = () => ({
     install: (app) => {
@@ -11,5 +14,20 @@ const createComponents = () => ({
         });
     },
 });
+/**
+ * 全局注册属性栏组件
+ */
+import * as editorComs from "./editor-comp/index";
+const createEditorComps = () => ({
+    install: (app) => {
+        forEach(editorComs, (component) => {
+            app.component(component.name, component);
+        });
+    },
+});
 
-createApp(App).use(store).use(createComponents()).mount("#app");
+const app = createApp(App);
+app.use(store);
+app.use(createComponents());
+app.use(createEditorComps());
+app.mount("#app");

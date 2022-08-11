@@ -4,6 +4,8 @@ export default { name: "ContextMenu" };
 <script setup>
 import { reactive, ref, toRefs, watch } from "vue";
 
+import { useCompStore } from "../../store/modules/component";
+
 const props = defineProps({
     modelValue: {
         type: Boolean,
@@ -45,13 +47,30 @@ watch(
     { deep: true }
 );
 
-const menus = reactive([{ id: 1, name: "删除组件" }]);
+const menus = reactive([{ id: 1, name: "删除组件", type: "delete" }]);
+
+// 组件
+const compStore = useCompStore();
+const handleDelete = () => {
+    compStore.deleteComp(compStore.currentComp.uuid, compStore.compsList);
+};
+
+const menuHandle = (rowData) => {
+    switch (rowData.type) {
+        case "delete":
+            handleDelete();
+            break;
+
+        default:
+            break;
+    }
+};
 </script>
 
 <template>
     <div class="menuMain">
         <div class="menuItem" v-for="item in menus" :key="item.id">
-            {{ item.name }}
+            <span @click="menuHandle(item)">{{ item.name }}</span>
         </div>
     </div>
 </template>
