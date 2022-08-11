@@ -65,6 +65,7 @@ const menuHandle = (rowData) => {
             break;
     }
 };
+
 </script>
 
 <template>
