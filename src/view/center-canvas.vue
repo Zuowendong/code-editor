@@ -8,6 +8,7 @@ import { formatStyle, formatProps } from "../utils/formatComp";
 import { getCompPorps } from "../editor-comp/index";
 
 import CompBox from "./components/CompBox.vue";
+import ContextMenu from "./components/ContextMenu.vue";
 
 /**
  * 属性处理
@@ -103,9 +104,6 @@ const handleContainerDrop = async (e, compItem) => {
         //     type: "xui-input-number",
         //     value: startY,
         // };
-
-        // compStore.addComp(compData);
-        // compStore.setCurrComp(compData);
     }
 };
 
@@ -113,8 +111,6 @@ const handleContainerDrop = async (e, compItem) => {
  * 移动事件
  */
 const handleMousedown = (e, item) => {
-    console.log('4343443');
-    
     handleSwitchComp(item);
     // 记录点击初始位置
     const startX = e.clientX;
@@ -142,7 +138,6 @@ const handleMousedown = (e, item) => {
 };
 
 const handleSwitchComp = (compData) => {
-    console.log(6666666666, compData);
     compStore.setCurrComp(compData);
 };
 
@@ -156,16 +151,46 @@ const changeCompBoxStyle = (item) => {
         left: `${item.props.base.attrs.axisX.value}px`,
     };
 };
+
+/**
+ * 右击菜单事件
+ */
+let isContextMenu = ref(false);
+let menuPosition = ref({});
+const onContextMenu = (e) => {
+    isContextMenu.value = true;
+    menuPosition.value.left = `${e.clientX - 204}px`; // 左侧栏宽度200， gap:4
+    menuPosition.value.top = `${e.clientY}px`;
+
+    let targetCompId = e.target.getAttribute("comp-uuid");
+    if (!targetCompId) {
+        // 循环找e.path
+        for (let i = 0; i < e.path.length; i++) {
+            const item = e.path[i];
+            if (item.getAttribute("comp-uuid")) {
+                targetCompId = item.getAttribute("comp-uuid");
+                break;
+            }
+        }
+    }
+    compStore.setCurrCompById(targetCompId);
+};
+/**
+ * 全局左击隐藏 右击菜单
+ */
+window.onclick = () => {
+    isContextMenu.value = false;
+};
 </script>
 
 <template>
-    <div class="centerMain" @contextmenu.prevent="onContextMenu">
+    <div class="centerMain" @contextmenu.stop.prevent="onContextMenu">
         <div
             class="canvas"
             @dragover.prevent
             @drop.stop.prevent="handleCompDrop"
         >
-            <!-- 当前组件： {{ compStore.compsList }} -->
+            当前组件： {{ compStore.compsList }}
             <comp-box
                 v-for="compItem in compStore.compsList"
                 :key="compItem.uuid"
@@ -179,6 +204,8 @@ const changeCompBoxStyle = (item) => {
             >
                 <component
                     :is="compItem.type"
+                    :comp-uuid="compItem.uuid"
+                    :comp-type="compItem.type"
                     v-bind="{ ...formatProps(compItem.props) }"
                 >
                     <template v-if="compItem.children">
@@ -186,6 +213,8 @@ const changeCompBoxStyle = (item) => {
                             v-for="childItem in compItem.children"
                             :key="childItem.uuid"
                             :is="childItem.type"
+                            :comp-uuid="childItem.uuid"
+                            :comp-type="childItem.type"
                             v-bind="{ ...formatProps(childItem.props) }"
                             @click.stop.prevent="handleSwitchComp(childItem)"
                         ></component>
@@ -193,6 +222,8 @@ const changeCompBoxStyle = (item) => {
                 </component>
             </comp-box>
         </div>
+
+        <context-menu v-model="isContextMenu" :position="menuPosition" />
     </div>
 </template>
 
