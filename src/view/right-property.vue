@@ -4,6 +4,9 @@ import { useCompStore } from "../store/modules/component";
 import { formatCompProp, formatCompPropCatalog } from "../utils/formatComp";
 import { formCodeTemp } from "../utils/server";
 
+import { getCanvasComps, setCanvasComps } from "../api/components";
+import { ElMessage } from "element-plus";
+
 const compStore = useCompStore();
 let compAttrs = computed(() => compStore.currentComp.props);
 
@@ -19,8 +22,35 @@ const updateCompProps = (newCompProp) => {
     });
 };
 
-const handleCodeTemp = () => {
+const handleCode = () => {
     formCodeTemp(compStore.compsList[0]);
+};
+
+const handleSave = async () => {
+    setCanvasComps({
+        data: "111",
+        other: "2222",
+    }).then((res) => {
+        console.log(1111, res);
+    });
+    setTimeout(() => {
+        setCanvasComps({
+            data: "111",
+            other: "2222",
+        }).then((res) => {
+            console.log(2222, res);
+        });
+    }, 200);
+    setTimeout(() => {
+        setCanvasComps({
+            data: "111",
+            other: "2222",
+        }).then((res) => {
+            console.log(33333, res);
+
+            ElMessage.warning(res)
+        });
+    }, 400);
 };
 </script>
 
@@ -28,9 +58,8 @@ const handleCodeTemp = () => {
     <div class="rightMain">
         <p class="title">
             <span class="titleText">property</span>
-            <el-button type="primary" @click="handleCodeTemp"
-                >代码模板</el-button
-            >
+            <el-button type="primary" @click="handleSave">保存</el-button>
+            <el-button type="primary" @click="handleCode">代码模板</el-button>
         </p>
         <div
             v-for="cataItem in formatCompPropCatalog(compAttrs)"
