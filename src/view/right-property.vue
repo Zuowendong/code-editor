@@ -27,30 +27,10 @@ const handleCode = () => {
 };
 
 const handleSave = async () => {
-    setCanvasComps({
-        data: "111",
-        other: "2222",
-    }).then((res) => {
-        console.log(1111, res);
-    });
-    setTimeout(() => {
-        setCanvasComps({
-            data: "111",
-            other: "2222",
-        }).then((res) => {
-            console.log(2222, res);
-        });
-    }, 200);
-    setTimeout(() => {
-        setCanvasComps({
-            data: "111",
-            other: "2222",
-        }).then((res) => {
-            console.log(33333, res);
-
-            ElMessage.warning(res)
-        });
-    }, 400);
+    console.log(11111, JSON.stringify(compStore.compsList));
+    if (compStore.compsList.length) {
+        await setCanvasComps({ data: JSON.stringify(compStore.compsList) });
+    }
 };
 </script>
 
