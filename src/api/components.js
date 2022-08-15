@@ -12,7 +12,7 @@ export function getCanvasComps(params) {
 export function setCanvasComps(data) {
     return myAxios(
         {
-            url: "/canvasComps",
+            url: "/setCanvasComps",
             method: "post",
             data,
         },
