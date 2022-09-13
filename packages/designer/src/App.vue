@@ -6,11 +6,11 @@ import RightProperty from "./views/right-property.vue";
 
 <template>
 	<div class="main">
-		<!-- <left-components />
+		<left-components />
 		<center-canvas />
-		<right-property /> -->
+		<right-property />
 
-		<ZyfText text="123123123"/>
+		<!-- <ZyfText text="123123123"/> -->
 	</div>
 </template>
 
@@ -26,9 +26,9 @@ import RightProperty from "./views/right-property.vue";
 .main {
 	width: 100%;
 	height: 100%;
-	/* display: grid;
+	display: grid;
 	background-color: antiquewhite;
 	grid-template-columns: 200px auto 400px;
-	column-gap: 4px; */
+	column-gap: 4px;
 }
 </style>

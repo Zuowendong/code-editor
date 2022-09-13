@@ -1,14 +1,11 @@
 import { forEach } from "lodash-es";
 import * as components from "./components/index";
 
-// 发版前注释
-// import ElementPlus from 'element-plus'
-// import 'element-plus/dist/index.css'
-
 export const createDesignerComps = () => ({
 	install: (app) => {
-		forEach(components, (component) => {
-			// app.use(ElementPlus)
+		forEach(components, async (component) => {
+			const compProps = await import("./components/" + component.name + "/properties.js");
+			component.customProps = compProps.properties;
 			app.component(component.name, component);
 		});
 	},

@@ -1,22 +1,23 @@
 <script setup>
-import { computed, reactive, ref } from "vue";
-import { throttle } from "lodash-es";
+import { ref, getCurrentInstance } from "vue";
+import { throttle, cloneDeep } from "lodash-es";
 
 import { useCompStore } from "../store/component";
 import { compTemplateData } from "../utils/compTemplateData";
-// import { getCompPorps } from "../editor-comp/index";
+import { formatStyle, formatProps } from "../utils/formatComp";
+
+import CompBox from "./comp-box.vue";
 
 /**
  * 属性处理
  */
+const internalInstance = getCurrentInstance();
 const handleProps = async (item) => {
-	// const compProps = await getCompPorps(item);
-	const compProps = {
-    properties: []
-  }
-
 	let compPropMap = {};
-	compProps.properties.forEach((el) => {
+	const compProps = internalInstance.appContext.components[item.type].customProps;
+	console.log("center-canvas.vue", compProps);
+
+	cloneDeep(compProps).forEach((el) => {
 		let attrMap = {};
 		if (el.attrs) {
 			el.attrs.forEach((attrItem) => {
@@ -87,22 +88,6 @@ const handleContainerDrop = async (e, compItem) => {
 		compStore.setCurrComp(compData);
 
 		// TODO: 组件内自由拖动
-
-		// const startX = e.clientX - 204;
-		// const startY = e.clientY;
-
-		// compData.props.base.attrs.axisX = {
-		//     key: "axisX",
-		//     name: "x坐标",
-		//     type: "xui-input-number",
-		//     value: startX,
-		// };
-		// compData.props.base.attrs.axisY = {
-		//     key: "axisY",
-		//     name: "y坐标",
-		//     type: "xui-input-number",
-		//     value: startY,
-		// };
 	}
 };
 
@@ -186,7 +171,7 @@ window.onclick = () => {
 	<div class="centerMain" @contextmenu.stop.prevent="onContextMenu">
 		<div class="canvas" @dragover.prevent @drop.stop.prevent="handleCompDrop">
 			<!-- 当前组件： {{ compStore.compsList }} -->
-			<comp-box
+			<CompBox
 				v-for="compItem in compStore.compsList"
 				:key="compItem.uuid"
 				:item="compItem"
@@ -215,7 +200,7 @@ window.onclick = () => {
 						></component>
 					</template>
 				</component>
-			</comp-box>
+			</CompBox>
 		</div>
 
 		<!-- <context-menu v-model="isContextMenu" :position="menuPosition" /> -->
