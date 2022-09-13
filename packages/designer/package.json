@@ -1,0 +1,24 @@
+{
+  "name": "@zyf/designer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@zyf/components": "workspace:^0.0.1",
+    "element-plus": "^2.2.16",
+    "pinia": "^2.0.22",
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.1.0",
+    "lodash-es": "^4.17.21",
+    "unplugin-auto-import": "^0.11.2",
+    "unplugin-vue-components": "^0.22.7",
+    "vite": "^3.1.0"
+  }
+}
