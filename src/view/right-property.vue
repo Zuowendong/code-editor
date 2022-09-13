@@ -38,8 +38,8 @@ const handleSave = async () => {
     <div class="rightMain">
         <p class="title">
             <span class="titleText">property</span>
-            <el-button type="primary" @click="handleSave">保存</el-button>
-            <el-button type="primary" @click="handleCode">代码模板</el-button>
+            <!-- <el-button type="primary" @click="handleSave">保存</el-button>
+            <el-button type="primary" @click="handleCode">代码模板</el-button> -->
         </p>
         <div
             v-for="cataItem in formatCompPropCatalog(compAttrs)"

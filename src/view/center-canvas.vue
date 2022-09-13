@@ -88,22 +88,6 @@ const handleContainerDrop = async (e, compItem) => {
         compStore.setCurrComp(compData);
 
         // TODO: 组件内自由拖动
-
-        // const startX = e.clientX - 204;
-        // const startY = e.clientY;
-
-        // compData.props.base.attrs.axisX = {
-        //     key: "axisX",
-        //     name: "x坐标",
-        //     type: "xui-input-number",
-        //     value: startX,
-        // };
-        // compData.props.base.attrs.axisY = {
-        //     key: "axisY",
-        //     name: "y坐标",
-        //     type: "xui-input-number",
-        //     value: startY,
-        // };
     }
 };
 

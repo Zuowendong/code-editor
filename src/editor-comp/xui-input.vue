@@ -46,8 +46,6 @@ watch(
 </template>
 
 <style scoped>
-.xuiInputMain {
-}
 .input {
     width: 100%;
 }

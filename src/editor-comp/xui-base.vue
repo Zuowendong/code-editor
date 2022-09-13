@@ -18,9 +18,9 @@ nextTick(() => {
     // 赋值组件默认宽高
     const uuid = compStore.currentComp.uuid;
     const componentDom = document.getElementsByClassName(uuid)[0];
-    const rawWidth = componentDom.style.width;
-    const rawHeight = componentDom.style.height;
-    console.log(111111, rawWidth, rawWidth);
+    // const rawWidth = componentDom.style.width;
+    // const rawHeight = componentDom.style.height;
+    // console.log(111111, rawWidth, rawWidth);
 });
 </script>
 
