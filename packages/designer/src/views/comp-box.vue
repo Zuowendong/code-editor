@@ -90,17 +90,17 @@ const currentCompId = computed(() => compStore.currentComp.uuid);
 	</div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .compBoxMain {
 	position: absolute;
 	cursor: move;
 	border: 1px solid transparent;
 }
 .compBoxMain:hover {
-	border: 1px dashed #333;
+	border: 1px dashed #fff;
 }
 .activeCompBox {
-	border-color: #333 !important;
+	border-color: #fff !important;
 }
 .shapePoint {
 	z-index: 1;

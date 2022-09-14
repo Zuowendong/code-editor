@@ -15,8 +15,6 @@ const internalInstance = getCurrentInstance();
 const handleProps = async (item) => {
 	let compPropMap = {};
 	const compProps = internalInstance.appContext.components[item.type].customProps;
-	console.log("center-canvas.vue", compProps);
-
 	cloneDeep(compProps).forEach((el) => {
 		let attrMap = {};
 		if (el.attrs) {
@@ -37,13 +35,10 @@ const handleProps = async (item) => {
  * 拖入事件
  */
 const compStore = useCompStore();
-
 const handleCompDrop = async (e) => {
 	if (e.dataTransfer) {
 		const dropData = JSON.parse(e.dataTransfer.getData("comp-drag"));
-
 		const propData = await handleProps(dropData);
-
 		const compDataModle = {
 			...dropData,
 			props: propData,
@@ -51,7 +46,7 @@ const handleCompDrop = async (e) => {
 		if (dropData.type === "ZyfContainer") compDataModle.children = [];
 		const compData = compTemplateData(compDataModle);
 
-		const startX = e.clientX - 204;
+		const startX = e.clientX - 200;
 		const startY = e.clientY;
 
 		compData.props.base.attrs.axisX = {
@@ -105,7 +100,7 @@ const handleMousedown = (e, item) => {
 	const boxOffsetY = e.offsetY;
 	// 计算偏移量
 	const mousemove = throttle((moveEvent) => {
-		const currtCompLeft = moveEvent.clientX - 204 - boxOffsetX;
+		const currtCompLeft = moveEvent.clientX - 200 - boxOffsetX;
 		const currtCompTop = moveEvent.clientY - boxOffsetY;
 		item.props.base.attrs.axisX.value = currtCompLeft;
 		item.props.base.attrs.axisY.value = currtCompTop;
@@ -207,22 +202,22 @@ window.onclick = () => {
 	</div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .centerMain {
-	position: relative;
-	background-color: #fff;
-	overflow: hidden;
-	background-image: linear-gradient(90deg, rgba(73, 69, 69, 0.2) 1%, rgba(0, 0, 0, 0) 5%),
-		linear-gradient(rgba(73, 69, 69, 0.2) 1%, rgba(0, 0, 0, 0) 5%);
-	background-size: 28px 28px;
-}
-.canvas {
-	width: 100%;
 	height: 100%;
 	position: relative;
-}
-.compBox {
-	position: absolute;
-	border: 1px solid transparent;
+	overflow: hidden;
+	background-image: linear-gradient(90deg, rgba(253, 253, 253, 0.2) 1%, rgba(255, 255, 255, 0) 5%),
+		linear-gradient(rgba(255, 255, 255, 0.2) 1%, rgba(255, 255, 255, 0) 5%);
+	background-size: 28px 28px;
+	.canvas {
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+	.compBox {
+		position: absolute;
+		border: 1px solid transparent;
+	}
 }
 </style>

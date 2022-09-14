@@ -1,0 +1,8 @@
+{
+    "label": "ZyfInput",
+    "name": "输入框",
+    "version": "1.0.0",
+    "categoryName": "表单类",
+    "categoryKey": "form",
+    "main": "index.js"
+}

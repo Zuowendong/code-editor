@@ -1,0 +1,8 @@
+{
+    "label": "ZyfContainer",
+    "name": "容器",
+    "version": "1.0.0",
+    "categoryName": "表单类",
+    "categoryKey": "form",
+    "main": "index.js"
+}

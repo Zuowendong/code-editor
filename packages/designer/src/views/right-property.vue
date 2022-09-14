@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from "vue";
 
 import { useCompStore } from "../store/component";
 import { formatCompProp, formatCompPropCatalog } from "../utils/formatComp";
+import { indexedDBUtil } from "@zyf/utils";
 
 const compStore = useCompStore();
 let compAttrs = computed(() => compStore.currentComp.props);
@@ -18,17 +19,38 @@ const updateCompProps = (newCompProp) => {
 		}
 	});
 };
+
+const previewHandle = () => {
+	window.open("http://192.168.32.161:8080/", "_blank");
+};
+
+const saveHandle = async () => {
+	const dbName = "zyf",
+		storeName = "scene";
+
+	const db = await indexedDBUtil.openDB(dbName, storeName, 1);
+	// var data = await indexedDBUtil.addData(db, storeName, {
+	// 	id: Math.floor(Math.random() * 100) + 1,
+	// 	compsData: JSON.stringify(compStore.compsList),
+	// });
+
+	var data = await indexedDBUtil.addData(db, storeName, {
+		id: 111, // 必须且值唯一
+		name: "张三",
+		age: 18,
+		desc: ["helloWord", "indexedDB"],
+	});
+
+	console.log("right-property.vue", data);
+};
 </script>
 
 <template>
 	<div class="rightMain">
-		<p class="title">
-			<span class="titleText">property</span>
-		</p>
 		<div v-for="cataItem in formatCompPropCatalog(compAttrs)" :key="cataItem.id" class="catalogWrap">
 			<p class="catalogTitle">{{ cataItem.name }}</p>
 			<div class="propWrap" v-for="(val, key, i) of formatCompProp(cataItem.attrs)" :key="i">
-				<span class="label">{{ val.name }}：</span>
+				<div class="labelName">{{ val.name }}：</div>
 				<component
 					:is="val.type"
 					:key="val.key"
@@ -40,40 +62,33 @@ const updateCompProps = (newCompProp) => {
 	</div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .rightMain {
-	background-color: #fff;
-}
-.title {
-	margin: 10px 0;
-	padding-bottom: 6px;
-	border-bottom: 1px solid #ddd;
-}
-.catalogWrap {
-	margin-bottom: 10px;
-	padding-bottom: 6px;
-	border-bottom: 1px solid rgb(226, 223, 223);
-}
-.catalogTitle {
-	height: 40px;
-	display: flex;
-	align-items: center;
-	font-size: 16px;
-	font-weight: bold;
-	padding-left: 6px;
-}
-.propWrap {
-	display: grid;
-	grid-template-columns: 100px auto;
-	column-gap: 16px;
-	align-items: center;
-	padding-right: 50px;
-	margin-bottom: 10px;
-}
-.label {
-	text-align: right;
-}
-.titleText {
-	margin-right: 20px;
+	.catalogWrap {
+		margin-bottom: 10px;
+		padding-bottom: 6px;
+		border-bottom: 1px solid rgb(138, 136, 136);
+	}
+	.catalogTitle {
+		color: #fff;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		font-size: 16px;
+		font-weight: bold;
+		padding-left: 10px;
+	}
+	.propWrap {
+		display: grid;
+		grid-template-columns: 86px auto;
+		column-gap: 16px;
+		align-items: center;
+		padding-right: 50px;
+		margin-bottom: 10px;
+		.labelName {
+			color: #fff;
+			text-align: right;
+		}
+	}
 }
 </style>

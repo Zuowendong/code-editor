@@ -1,0 +1,8 @@
+{
+    "label": "ZyfText",
+    "name": "文本",
+    "version": "1.0.0",
+    "categoryName": "文字类",
+    "categoryKey": "text",
+    "main": "index.js"
+}
