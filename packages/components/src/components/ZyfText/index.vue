@@ -22,7 +22,7 @@ let { width, height, text } = toRefs(props);
 .textMain {
 	width: v-bind(width);
 	height: v-bind(height);
-	border: 1px solid #fff;
+	/* border: 1px solid #fff; */
 	display: flex;
 	align-items: center;
 	justify-content: center;

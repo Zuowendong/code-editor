@@ -45,7 +45,7 @@ watch(
 	position: relative;
 	width: v-bind(width);
 	height: v-bind(height);
-	border: 1px solid #333;
+	/* border: 1px solid #fff; */
 	display: flex;
 	align-items: center;
 	justify-content: center;

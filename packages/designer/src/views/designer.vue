@@ -31,6 +31,13 @@ const route = useRoute();
 		grid-column-start: 1;
 		grid-column-end: 4;
 		color: #fff;
+		box-sizing: border-box;
+		border-bottom: 1px solid #273141;
+	}
+	.canvas {
+		box-sizing: border-box;
+		border-left: 1px solid #273141;
+		border-right: 1px solid #273141;
 	}
 }
 </style>

@@ -7,6 +7,7 @@ import { compTemplateData } from "../utils/compTemplateData";
 import { formatStyle, formatProps } from "../utils/formatComp";
 
 import CompBox from "./comp-box.vue";
+import CompRender from "./comp-render.vue";
 
 /**
  * 属性处理
@@ -44,27 +45,32 @@ const handleCompDrop = async (e) => {
 			props: propData,
 		};
 		if (dropData.type === "ZyfContainer") compDataModle.children = [];
-		const compData = compTemplateData(compDataModle);
-
-		const startX = e.clientX - 200;
-		const startY = e.clientY;
-
-		compData.props.base.attrs.axisX = {
-			key: "axisX",
-			name: "x坐标",
-			type: "xui-input-number",
-			value: startX,
-		};
-		compData.props.base.attrs.axisY = {
-			key: "axisY",
-			name: "y坐标",
-			type: "xui-input-number",
-			value: startY,
-		};
-
+		let compData = compTemplateData(compDataModle);
+		compData = initPosition(e, compData);
 		compStore.addComp(compData);
 		compStore.setCurrComp(compData);
 	}
+};
+
+const initPosition = (e, compData) => {
+	/**
+	 * 基于父级容器的x位置 e.offsetX
+	 * y 位置 e.offsetY
+	 */
+	compData.props.base.attrs.axisX = {
+		key: "axisX",
+		name: "x坐标",
+		type: "xui-input-number",
+		value: e.offsetX,
+	};
+	compData.props.base.attrs.axisY = {
+		key: "axisY",
+		name: "y坐标",
+		type: "xui-input-number",
+		value: e.offsetY,
+	};
+
+	return compData;
 };
 
 /**
@@ -89,19 +95,39 @@ const handleContainerDrop = async (e, compItem) => {
 /**
  * 移动事件
  */
+const canvasRef = ref();
 const handleMousedown = (e, item) => {
 	handleSwitchComp(item);
-	// 记录点击初始位置
-	const startX = e.clientX;
-	const startY = e.clientY;
+	// canvas 左上边距
+	const canvasOffsetX = canvasRef.value.getBoundingClientRect().left;
+	const canvasOffsetY = canvasRef.value.getBoundingClientRect().top;
+
+	// canvas 宽高
+	const canvasWidth = canvasRef.value.getBoundingClientRect().width;
+	const canvasHeight = canvasRef.value.getBoundingClientRect().height;
+
+	// 当前组件的宽高
+	const currtCompWidth = e.target.getBoundingClientRect().width;
+	const currtCompHeight = e.target.getBoundingClientRect().height;
 
 	// 鼠标在组件内偏移量
 	const boxOffsetX = e.offsetX;
 	const boxOffsetY = e.offsetY;
 	// 计算偏移量
 	const mousemove = throttle((moveEvent) => {
-		const currtCompLeft = moveEvent.clientX - 200 - boxOffsetX;
-		const currtCompTop = moveEvent.clientY - boxOffsetY;
+		console.log("3333333", moveEvent, canvasRef.value);
+
+		const currtCompLeft = moveEvent.clientX - canvasOffsetX - boxOffsetX;
+		const currtCompTop = moveEvent.clientY - canvasOffsetY - boxOffsetY;
+
+		// 左上临界处理
+		if (currtCompLeft < 0) return;
+		if (currtCompTop < 0) return;
+
+		// 右下临界处理
+		if (currtCompLeft > canvasWidth - currtCompWidth) return;
+		if (currtCompTop > canvasHeight - currtCompHeight) return;
+
 		item.props.base.attrs.axisX.value = currtCompLeft;
 		item.props.base.attrs.axisY.value = currtCompTop;
 		compStore.updateCompProps(item);
@@ -138,7 +164,7 @@ let isContextMenu = ref(false);
 let menuPosition = ref({});
 const onContextMenu = (e) => {
 	isContextMenu.value = true;
-	menuPosition.value.left = `${e.clientX - 204}px`; // 左侧栏宽度200， gap:4
+	menuPosition.value.left = `${e.clientX - 200}px`; // 左侧栏宽度200
 	menuPosition.value.top = `${e.clientY}px`;
 
 	let targetCompId = e.target.getAttribute("comp-uuid");
@@ -164,37 +190,19 @@ window.onclick = () => {
 
 <template>
 	<div class="centerMain" @contextmenu.stop.prevent="onContextMenu">
-		<div class="canvas" @dragover.prevent @drop.stop.prevent="handleCompDrop">
+		<div class="canvas" ref="canvasRef" @dragover.prevent @drop.stop.prevent="handleCompDrop">
 			<!-- 当前组件： {{ compStore.compsList }} -->
 			<CompBox
 				v-for="compItem in compStore.compsList"
 				:key="compItem.uuid"
 				:item="compItem"
-				class="compBox"
 				:style="changeCompBoxStyle(compItem)"
 				@mousedown.stop.prevent="handleMousedown($event, compItem)"
 				@click.stop.prevent="handleSwitchComp(compItem)"
 				@dragover.prevent
 				@drop.stop.prevent="handleContainerDrop($event, compItem)"
 			>
-				<component
-					:is="compItem.type"
-					:comp-uuid="compItem.uuid"
-					:comp-type="compItem.type"
-					v-bind="{ ...formatProps(compItem.props) }"
-				>
-					<template v-if="compItem.children">
-						<component
-							v-for="childItem in compItem.children"
-							:key="childItem.uuid"
-							:is="childItem.type"
-							:comp-uuid="childItem.uuid"
-							:comp-type="childItem.type"
-							v-bind="{ ...formatProps(childItem.props) }"
-							@click.stop.prevent="handleSwitchComp(childItem)"
-						></component>
-					</template>
-				</component>
+				<CompRender :compItem="compItem" />
 			</CompBox>
 		</div>
 
@@ -211,13 +219,8 @@ window.onclick = () => {
 		linear-gradient(rgba(255, 255, 255, 0.2) 1%, rgba(255, 255, 255, 0) 5%);
 	background-size: 28px 28px;
 	.canvas {
-		width: 100%;
 		height: 100%;
 		position: relative;
-	}
-	.compBox {
-		position: absolute;
-		border: 1px solid transparent;
 	}
 }
 </style>

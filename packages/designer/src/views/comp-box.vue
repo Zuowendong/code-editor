@@ -94,12 +94,15 @@ const currentCompId = computed(() => compStore.currentComp.uuid);
 .compBoxMain {
 	position: absolute;
 	cursor: move;
-	border: 1px solid transparent;
-}
-.compBoxMain:hover {
-	border: 1px dashed #fff;
+	min-width: 100px;
+	min-height: 30px;
+	border: 1px solid rgb(197, 197, 197);
+	&:hover {
+		border: 1px solid #fff;
+	}
 }
 .activeCompBox {
+	border-style: solid !important;
 	border-color: #fff !important;
 }
 .shapePoint {
@@ -107,7 +110,7 @@ const currentCompId = computed(() => compStore.currentComp.uuid);
 	position: absolute;
 	width: 4px;
 	height: 4px;
-	border: 2px solid #333;
+	border: 2px dashed #fff;
 	border-radius: 50%;
 	background-color: #fff;
 	transform: translate(-40%, -30%);
