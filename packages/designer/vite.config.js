@@ -29,10 +29,10 @@ export default defineConfig({
 		vue(),
 		AutoImport({
 			imports: ["vue"],
-			resolvers: [ElementPlusResolver()],
+			// resolvers: [ElementPlusResolver()],
 		}),
 		Components({
-			resolvers: [ElementPlusResolver()],
+			// resolvers: [ElementPlusResolver()],
 		}),
 	],
 });

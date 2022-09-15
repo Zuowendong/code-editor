@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<zyf-table :fetch="tableData" :tableFilter="tableFilterList">
+	<div class="sceneMain">
+		<ZyfTable :fetch="tableData" :tableFilter="tableFilterList">
 			<template #btn>
 				<el-button type="primary" plain @click="createHandle">
 					<el-icon><Plus /></el-icon>添加
@@ -12,13 +12,13 @@
 			<el-table-column prop="createTime" label="创建时间" width="150" />
 			<el-table-column prop="updateTime" label="更新时间" width="150" />
 			<el-table-column label="操作" width="220">
-				<template #default="{ row }">
+				<template #default="{ row }">  
 					<el-button link type="primary" @click="viewHandle(row)">查看</el-button>
 					<el-button link type="primary" @click="editHandle(row)">进入编辑器</el-button>
 					<el-button link type="primary" @click="deleteHandle(row)">删除</el-button>
 				</template>
 			</el-table-column>
-		</zyf-table>
+		</ZyfTable>
 
 		<ManageScenesCreate v-model="isManageScenesCreate" />
 	</div>
@@ -70,3 +70,9 @@ const editHandle = (rowData) => {
 const viewHandle = () => {};
 const deleteHandle = () => {};
 </script>
+
+<style lang="scss" scoped>
+.sceneMain {
+	padding: 0 10px;
+}
+</style>

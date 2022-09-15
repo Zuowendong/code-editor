@@ -5,11 +5,15 @@ import { createPinia } from "pinia";
 import router from "./router/index";
 import { forEach } from "lodash-es";
 
-import "zyfui/dist/style.css";
-import { createZyfUI } from "zyfui";
-
 import * as editorComps from "./components";
 import { createDesignerComps } from "@zyf/components";
+
+import "element-plus/dist/index.css";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+import ElementPlus from "element-plus";
+
+import "zyfui/dist/style.css";
+import { createZyfUI } from "zyfui";
 
 const store = createPinia();
 /**
@@ -26,7 +30,11 @@ const createEditorComps = () => ({
 const app = createApp(App);
 app.use(store);
 app.use(router);
-app.use(createZyfUI());
 app.use(createEditorComps());
 app.use(createDesignerComps());
+app.use(createZyfUI());
+app.use(ElementPlus, {
+	locale: zhCn,
+});
+
 app.mount("#app");

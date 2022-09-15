@@ -41,7 +41,7 @@ importers:
       vite: ^3.1.0
       vue: ^3.2.37
       vue-router: '4'
-      zyfui: ^0.0.3
+      zyfui: 0.0.4
     dependencies:
       '@element-plus/icons-vue': 2.0.9_vue@3.2.39
       '@zyf/components': link:../components
@@ -49,7 +49,7 @@ importers:
       pinia: 2.0.22_vue@3.2.39
       vue: 3.2.39
       vue-router: 4.1.5_vue@3.2.39
-      zyfui: 0.0.3
+      zyfui: 0.0.4
     devDependencies:
       '@vitejs/plugin-vue': 3.1.0_vite@3.1.0+vue@3.2.39
       '@zyf/utils': link:../../utils
@@ -1117,8 +1117,8 @@ packages:
     resolution: {integrity: sha512-h9atBP/bsZohWpHnr+2sic8Iecb60GxftXsWNLLLSqewgIsGzByd2gcIID4nXcG+3tNe4GQG3dLcff3kXupdRA==}
     dev: true
 
-  /zyfui/0.0.3:
-    resolution: {integrity: sha512-2Idm1dun8rWbbXSTOowaR/FMEOPRvnHsyqMdEdyxfeJOIESySLWQd6HdUR8TmzWBkVn+xK4gn13sDEVKll9R6A==}
+  /zyfui/0.0.4:
+    resolution: {integrity: sha512-hx6+7LnLAg2XkG4FjrvguA07LQGauAk8BRdIZdLeURWE5A1ZMr5AUlwllM3tYOPRypC9C8d3fCQ1vn9MTeVQ1g==}
     dependencies:
       '@element-plus/icons-vue': 2.0.9_vue@3.2.39
       element-plus: 2.2.16_vue@3.2.39
