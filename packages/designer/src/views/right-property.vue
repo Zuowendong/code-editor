@@ -24,25 +24,7 @@ const previewHandle = () => {
 	window.open("http://192.168.32.161:8080/", "_blank");
 };
 
-const saveHandle = async () => {
-	const dbName = "zyf",
-		storeName = "scene";
 
-	const db = await indexedDBUtil.openDB(dbName, storeName, 1);
-	// var data = await indexedDBUtil.addData(db, storeName, {
-	// 	id: Math.floor(Math.random() * 100) + 1,
-	// 	compsData: JSON.stringify(compStore.compsList),
-	// });
-
-	var data = await indexedDBUtil.addData(db, storeName, {
-		id: 111, // 必须且值唯一
-		name: "张三",
-		age: 18,
-		desc: ["helloWord", "indexedDB"],
-	});
-
-	console.log("right-property.vue", data);
-};
 </script>
 
 <template>

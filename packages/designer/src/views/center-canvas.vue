@@ -1,6 +1,7 @@
 <script setup>
-import { ref, getCurrentInstance } from "vue";
+import { ref, getCurrentInstance, toRefs, onMounted } from "vue";
 import { throttle, cloneDeep } from "lodash-es";
+import { indexedDBUtil } from "@zyf/utils";
 
 import { useCompStore } from "../store/component";
 import { compTemplateData } from "../utils/compTemplateData";
@@ -8,6 +9,29 @@ import { formatStyle, formatProps } from "../utils/formatComp";
 
 import CompBox from "./comp-box.vue";
 import CompRender from "./comp-render.vue";
+import { indexedDBConfig } from "../config/indexedDB";
+
+const props = defineProps({
+	sceneInfo: {
+		type: Object,
+		default: () => {
+			return {};
+		},
+	},
+});
+let { sceneInfo } = toRefs(props);
+
+const getSceneDataByIndexedDB = async () => {
+	const { dbName, storeName, version } = indexedDBConfig;
+	const db = await indexedDBUtil.openDB(dbName, storeName, version);
+	const data = await indexedDBUtil.getDataByKey(db, storeName, sceneInfo.value.projectId);
+	if (data) compStore.compsList = data.details;
+};
+
+onMounted(() => {
+	compStore.compsList.length = 0;
+	getSceneDataByIndexedDB();
+});
 
 /**
  * 属性处理
@@ -191,7 +215,7 @@ window.onclick = () => {
 <template>
 	<div class="centerMain" @contextmenu.stop.prevent="onContextMenu">
 		<div class="canvas" ref="canvasRef" @dragover.prevent @drop.stop.prevent="handleCompDrop">
-			<!-- 当前组件： {{ compStore.compsList }} -->
+			<!-- <span style="color: #fff">当前组件： {{ compStore.compsList }}</span> -->
 			<CompBox
 				v-for="compItem in compStore.compsList"
 				:key="compItem.uuid"

@@ -12,10 +12,10 @@ const route = useRoute();
 <template>
 	<div class="main">
 		<div class="header">
-			<DesignerHeader :title="route.query.name" />
+			<DesignerHeader :sceneInfo="route.query" />
 		</div>
 		<div class="menu"><CompsMenu /></div>
-		<div class="canvas"><CenterCanvas /></div>
+		<div class="canvas"><CenterCanvas :sceneInfo="route.query" /></div>
 		<div class="property"><RightProperty /></div>
 	</div>
 </template>
